@@ -1,23 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, Injector, NgModule, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ValidationCallbackData } from 'devextreme/ui/validation_rules';
 import { DxFormModule } from 'devextreme-angular/ui/form';
 import { DxLoadIndicatorModule } from 'devextreme-angular/ui/load-indicator';
 import notify from 'devextreme/ui/notify';
 import { AuthService } from '../../services';
+import { AppComponentBase } from '../../entities/app-component-base';
 
 
 @Component({
   selector: 'app-change-passsword-form',
   templateUrl: './change-password-form.component.html'
 })
-export class ChangePasswordFormComponent implements OnInit {
+export class ChangePasswordFormComponent extends AppComponentBase implements OnInit {
   loading = false;
   formData: any = {};
   recoveryCode: string = '';
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
+  constructor(injector: Injector, private authService: AuthService, private router: Router, private route: ActivatedRoute) {super(injector); }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {

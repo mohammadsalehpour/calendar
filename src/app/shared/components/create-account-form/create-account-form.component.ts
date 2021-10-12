@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { Component, Injector, NgModule } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ValidationCallbackData } from 'devextreme/ui/validation_rules';
 import { DxFormModule } from 'devextreme-angular/ui/form';
 import { DxLoadIndicatorModule } from 'devextreme-angular/ui/load-indicator';
 import notify from 'devextreme/ui/notify';
 import { AuthService } from '../../services';
+import { AppComponentBase } from '../../entities/app-component-base';
 
 
 @Component({
@@ -13,11 +14,13 @@ import { AuthService } from '../../services';
   templateUrl: './create-account-form.component.html',
   styleUrls: ['./create-account-form.component.scss']
 })
-export class CreateAccountFormComponent {
+export class CreateAccountFormComponent extends AppComponentBase {
   loading = false;
   formData: any = {};
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(injector: Injector, private authService: AuthService, private router: Router) {
+    super(injector);
+  }
 
   async onSubmit(e: Event) {
     e.preventDefault();

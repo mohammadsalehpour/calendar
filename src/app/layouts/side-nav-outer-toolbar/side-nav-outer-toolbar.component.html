@@ -6,6 +6,7 @@
 </app-header>
 
 <dx-drawer
+[rtlEnabled]="rtlEnabled"
   class="layout-body"
   position="before"
   [closeOnOutsideClick]="shaderEnabled"
@@ -24,7 +25,8 @@
     (openMenu)="navigationClick()">
   </app-side-navigation-menu>
 
-  <dx-scroll-view class="with-footer">
+  <dx-scroll-view class="with-footer"
+  [rtlEnabled]="rtlEnabled">
     <div class="content">
       <ng-content></ng-content>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, NgModule, Input, ViewChild, Injector } from '@angular/core';
 import { SideNavigationMenuModule, HeaderModule } from '../../shared/components';
 import { ScreenService } from '../../shared/services';
 import { ItemClickEvent as TreeViewItemClickEvent } from 'devextreme/ui/tree_view';
@@ -9,13 +9,14 @@ import { DxToolbarModule } from 'devextreme-angular/ui/toolbar';
 import { CommonModule } from '@angular/common';
 
 import { Router, NavigationEnd } from '@angular/router';
+import { AppComponentBase } from 'src/app/shared/entities/app-component-base';
 
 @Component({
   selector: 'app-side-nav-inner-toolbar',
   templateUrl: './side-nav-inner-toolbar.component.html',
   styleUrls: ['./side-nav-inner-toolbar.component.scss']
 })
-export class SideNavInnerToolbarComponent implements OnInit {
+export class SideNavInnerToolbarComponent extends AppComponentBase implements OnInit {
   @ViewChild(DxScrollViewComponent, { static: true }) scrollView!: DxScrollViewComponent;
   selectedRoute = '';
 
@@ -30,7 +31,9 @@ export class SideNavInnerToolbarComponent implements OnInit {
   minMenuSize = 0;
   shaderEnabled = false;
 
-  constructor(private screen: ScreenService, private router: Router) { }
+  constructor(injector: Injector, private screen: ScreenService, private router: Router) {
+    super(injector);
+   }
 
   ngOnInit() {
     this.menuOpened = this.screen.sizes['screen-large'];

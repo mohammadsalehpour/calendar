@@ -1,9 +1,10 @@
-import { Component, NgModule, Input } from '@angular/core';
+import { Component, NgModule, Input, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { DxListModule } from 'devextreme-angular/ui/list';
 import { DxContextMenuModule } from 'devextreme-angular/ui/context-menu';
 import { IUser } from '../../services/auth.service';
+import { AppComponentBase } from '../../entities/app-component-base';
 
 @Component({
   selector: 'app-user-panel',
@@ -11,7 +12,7 @@ import { IUser } from '../../services/auth.service';
   styleUrls: ['./user-panel.component.scss']
 })
 
-export class UserPanelComponent {
+export class UserPanelComponent extends AppComponentBase {
   @Input()
   menuItems: any;
 
@@ -21,7 +22,9 @@ export class UserPanelComponent {
   @Input()
   user!: IUser | null;
 
-  constructor() {}
+  constructor(injector: Injector) {
+    super(injector);
+  }
 }
 
 @NgModule({

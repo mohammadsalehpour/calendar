@@ -1,4 +1,5 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, Injector } from '@angular/core';
+import { AppComponentBase } from './shared/entities/app-component-base';
 import { AuthService, ScreenService, AppInfoService } from './shared/services';
 
 @Component({
@@ -6,12 +7,14 @@ import { AuthService, ScreenService, AppInfoService } from './shared/services';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent  {
+export class AppComponent extends AppComponentBase {
   @HostBinding('class') get getClass() {
     return Object.keys(this.screen.sizes).filter(cl => this.screen.sizes[cl]).join(' ');
   }
 
-  constructor(private authService: AuthService, private screen: ScreenService, public appInfo: AppInfoService) { }
+  constructor(injector: Injector, private authService: AuthService, private screen: ScreenService, public appInfo: AppInfoService) {
+    super(injector);
+  }
 
   isAuthenticated() {
     return this.authService.loggedIn;

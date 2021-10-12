@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { Component, Injector, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SingleCardModule } from 'src/app/layouts';
 import { Router } from '@angular/router';
+import { AppComponentBase } from './shared/entities/app-component-base';
 
 @Component({
   selector: 'app-not-authorized-container',
   template: `
-    <app-single-card [title]="title" [description]="description">
+    <app-single-card [title]="formatMessage(title)" [description]="formatMessage(description)">
       <router-outlet></router-outlet>
     </app-single-card>
   `,
@@ -18,17 +19,19 @@ import { Router } from '@angular/router';
     }
   `]
 })
-export class NotAuthorizedContainerComponent {
+export class NotAuthorizedContainerComponent extends AppComponentBase {
 
-  constructor(private router: Router) { }
+  constructor(injector: Injector, private router: Router) {
+    super(injector)
+   }
 
   get title() {
     const path = this.router.url.split('/')[1];
     switch (path) {
-      case 'login-form': return 'Sign In';
-      case 'reset-password': return 'Reset Password';
-      case 'create-account': return 'Sign Up';
-      case 'change-password': return 'Change Password';
+      case 'login-form': return 'SignIn';
+      case 'reset-password': return 'ResetPassword';
+      case 'create-account': return 'SignUp';
+      case 'change-password': return 'ChangePassword';
       default: return '';
     }
   }

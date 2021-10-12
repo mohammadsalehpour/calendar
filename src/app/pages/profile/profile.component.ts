@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
+import { AppComponentBase } from 'src/app/shared/entities/app-component-base';
 
 @Component({
   templateUrl: 'profile.component.html',
   styleUrls: [ './profile.component.scss' ]
 })
 
-export class ProfileComponent {
+export class ProfileComponent extends AppComponentBase {
   employee: any;
   colCountByScreen: object;
 
-  constructor() {
+  constructor(injector: Injector) {
+    super(injector);
     this.employee = {
       ID: 7,
       FirstName: 'Sandra',

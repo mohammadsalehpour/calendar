@@ -6,6 +6,7 @@
     <div class="user-name">{{user?.email}}</div>
   </div>
   <dx-context-menu
+  [rtlEnabled]="rtlEnabled"
     *ngIf="menuMode === 'context'"
     [items]="menuItems"
     target=".user-button"
@@ -18,6 +19,7 @@
     cssClass="user-menu">
   </dx-context-menu>
   <dx-list
+  [rtlEnabled]="rtlEnabled"
     *ngIf="menuMode === 'list'"
     class="dx-toolbar-menu-action"
     [items]="menuItems">

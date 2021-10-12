@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import 'devextreme/data/odata/store';
+import { AppComponentBase } from 'src/app/shared/entities/app-component-base';
 
 @Component({
   templateUrl: 'tasks.component.html'
 })
 
-export class TasksComponent {
+export class TasksComponent extends AppComponentBase {
   dataSource: any;
   priority: any[];
 
-  constructor() {
+  constructor(injector: Injector) {
+    super(injector);
     this.dataSource = {
       store: {
         type: 'odata',

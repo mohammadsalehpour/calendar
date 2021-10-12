@@ -1,4 +1,4 @@
-import { Component, NgModule, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, NgModule, Input, Output, EventEmitter, OnInit, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AuthService, IUser } from '../../services';
@@ -7,13 +7,14 @@ import { DxButtonModule } from 'devextreme-angular/ui/button';
 import { DxToolbarModule } from 'devextreme-angular/ui/toolbar';
 
 import { Router } from '@angular/router';
+import { AppComponentBase } from '../../entities/app-component-base';
 @Component({
   selector: 'app-header',
   templateUrl: 'header.component.html',
   styleUrls: ['./header.component.scss']
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent extends AppComponentBase implements OnInit {
   @Output()
   menuToggle = new EventEmitter<boolean>();
 
@@ -40,7 +41,9 @@ export class HeaderComponent implements OnInit {
     }
   }];
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(injector: Injector, private authService: AuthService, private router: Router) {
+    super(injector);
+   }
 
   ngOnInit() {
     this.authService.getUser().then((e) => this.user = e.data);

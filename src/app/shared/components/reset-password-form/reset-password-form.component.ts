@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { Component, Injector, NgModule } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { DxFormModule } from 'devextreme-angular/ui/form';
 import { DxLoadIndicatorModule } from 'devextreme-angular/ui/load-indicator';
 import notify from 'devextreme/ui/notify';
+import { AppComponentBase } from '../../entities/app-component-base';
 import { AuthService } from '../../services';
 
 const notificationText = 'We\'ve sent a link to reset your password. Check your inbox.';
@@ -13,11 +14,13 @@ const notificationText = 'We\'ve sent a link to reset your password. Check your 
   templateUrl: './reset-password-form.component.html',
   styleUrls: ['./reset-password-form.component.scss']
 })
-export class ResetPasswordFormComponent {
+export class ResetPasswordFormComponent extends AppComponentBase {
   loading = false;
   formData: any = {};
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(injector: Injector, private authService: AuthService, private router: Router) {
+    super(injector);
+  }
 
   async onSubmit(e: Event) {
     e.preventDefault();

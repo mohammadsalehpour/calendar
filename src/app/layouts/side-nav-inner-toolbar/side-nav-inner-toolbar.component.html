@@ -1,4 +1,5 @@
 <dx-drawer
+  [rtlEnabled]="rtlEnabled"
   class="drawer"
   position="before"
   [closeOnOutsideClick]="shaderEnabled"
@@ -15,7 +16,8 @@
     *dxTemplate="let dataMenu of 'panel'"
     (selectedItemChanged)="navigationChanged($event)"
     (openMenu)="navigationClick()">
-      <dx-toolbar id="navigation-header">
+      <dx-toolbar id="navigation-header"
+      [rtlEnabled]="rtlEnabled">
         <dxi-item
           *ngIf="minMenuSize !== 0"
           location="before"
@@ -41,7 +43,8 @@
       (menuToggle)="menuOpened = !menuOpened;">
     </app-header>
 
-    <dx-scroll-view class="layout-body with-footer">
+    <dx-scroll-view class="layout-body with-footer"
+    [rtlEnabled]="rtlEnabled">
       <div class="content">
         <ng-content></ng-content>
       </div>
