@@ -38,15 +38,15 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
   @Output() delete = new EventEmitter<Appointment>();
 
   _date!: Date;
-  rowHeight: number = 52;
-  currentPosition: number = 0;
+  rowHeight = 52;
+  currentPosition = 0;
   _appointments: Appointment[] = [];
   draggingRow!: { index: number, data: Appointment };
   hours: number[] = Array.from({ length: 24 }, (_, i) => i);
   protected unsubscribe$ = new Subject<void>();
 
-  get selectedDate() { return this._date; }
-  get appointments() { return this._appointments; }
+  get selectedDate(): Date { return this._date; }
+  get appointments(): Appointment[] { return this._appointments; }
 
   constructor(public dialog: MatDialog) { }
 
@@ -125,7 +125,7 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
 
   computeDragRenderPos() {
     const quarterHeight = this.rowHeight / 4;
-    return (pos: { x: any; y: number; }) => ({ x: pos.x, y: (pos.y / quarterHeight) * quarterHeight });
+    return (pos: { x: number; y: number; }) => ({ x: pos.x, y: (pos.y / quarterHeight) * quarterHeight });
   }
 
   dragStart(data: Appointment, index: number) {

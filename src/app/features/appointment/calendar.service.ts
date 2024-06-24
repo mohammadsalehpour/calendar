@@ -37,7 +37,7 @@ export class CalendarService {
     if (storageAppointments) appointments = JSON.parse(storageAppointments);
     if (appointments.length > 0) {
       console.log(appointments)
-      this.appointments = appointments.map(app => (app != null ? { ...app, from: new Date(app.from), to: new Date(app.to), guid: app.guid || UUID() } : <Appointment>{}));
+      this.appointments = appointments.map(app => (app != null ? { ...app, from: new Date(app.from), to: new Date(app.to), guid: app.guid || UUID() } : {} as Appointment));
     }
 
 

@@ -26,9 +26,9 @@ import { Appointment, ToFormControl } from "../calendar.interface";
 export class AppointmentModalComponent {
 
   form: FormGroup<ToFormControl<Appointment>>;
-  from: string = '';
-  to: string = '';
-  title: string = '';
+  from = '';
+  to = '';
+  title = '';
   errMessages: string[] = [];
 
 
@@ -46,15 +46,19 @@ export class AppointmentModalComponent {
       to: new FormControl(new Date(), Validators.required),
     });
 
-    data && this.form.patchValue(data);
+    if (data) {
+      this.form.patchValue(data);
+    }
+
+    // data && this.form.patchValue(data);
     this.from = this.form.value.from!.toLocaleTimeString('en-US', { hour12: false, timeStyle: 'short' });
     this.to = this.form.value.to!.toLocaleTimeString('en-US', { hour12: false, timeStyle: 'short' });
 
   }
 
-  updateHours(key: any, val: any) {
+  updateHours(key: string | number, val: string) {
     if (key == 'from') {
-      this.form = val;
+      this.from = val;
     }
     if (key == 'to') {
       this.to = val;
@@ -69,13 +73,13 @@ export class AppointmentModalComponent {
   }
 
   customFormValidation(): void {
-    const message: string = 'End time Should be later than start time';
+    const message = 'End time Should be later than start time';
     if (this.form.controls.from.value && this.form.controls.to.value) {
       if (this.form.controls.from.value.getTime() < this.form.controls.to.value.getTime()
         && this.form.controls.from.value.getTime() !== this.form.controls.to.value.getTime()) {
 
         if (this.errMessages.includes(message)) {
-          this.errMessages = this.errMessages.filter(item => { item !== message });
+          this.errMessages = this.errMessages.filter((item: string) => { item !== message });
         }
         this.form.controls.from.setErrors({ invalid: null });
         this.form.controls.from.updateValueAndValidity();
