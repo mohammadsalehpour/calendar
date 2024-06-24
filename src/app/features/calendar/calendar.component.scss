@@ -1,0 +1,15 @@
+.inline-calendar-card {
+  width: 300px;
+  margin-top: 15px;
+}
+
+.container {
+  gap: 1rem;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+app-calendar-day-view {
+  flex: 1;
+}

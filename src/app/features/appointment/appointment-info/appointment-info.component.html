@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+  <p>
+    <mat-icon>description</mat-icon> {{ data.description || 'No Description' }}
+  </p>
+  <div>
+    <mat-icon>schedule</mat-icon>
+    {{ data.from | date: 'HH:mm' }} -
+    {{ data.to | date: 'HH:mm' }}
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close cdkFocusInitial>Close</button>
+</mat-dialog-actions>
