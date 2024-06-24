@@ -3,20 +3,8 @@
   <form [formGroup]="form">
     <mat-form-field class="w-100 mt-4" appearance="outline">
       <mat-label>Title</mat-label>
-      <input
-        matInput
-        formControlName="title"
-        (input)="onGlobalInputChanges()" />
+      <input matInput formControlName="title" />
     </mat-form-field>
-
-    @if (
-      form.controls.title.invalid &&
-      (form.controls.title.dirty || form.controls.title.touched)
-    ) {
-      <p class="errMsg">
-        {{ getValidationMessage(form.controls.title.errors, 'title') }}
-      </p>
-    }
 
     <mat-form-field class="w-100" appearance="outline">
       <mat-label>Description</mat-label>
@@ -24,7 +12,16 @@
     </mat-form-field>
   </form>
 
-  <mat-form-field class="w-100" appearance="outline">
+  @if (
+    form.controls.title.invalid &&
+    (form.controls.title.dirty || form.controls.title.touched)
+  ) {
+    <p class="errMsg">
+      {{ validationMessage(form.controls.title.errors, 'title') }}
+    </p>
+  }
+
+  <mat-form-field class="w-48 pdr-19" appearance="outline">
     <mat-label>From</mat-label>
     <input
       matInput
@@ -34,15 +31,15 @@
       #fromInput="ngModel"
       [ngModel]="from"
       required
-      (ngModelChange)="updateHours('from', $event)" />
+      (ngModelChange)="updateTime('from', $event)" />
   </mat-form-field>
   @if (fromInput.invalid && (fromInput.dirty || fromInput.touched)) {
     <p class="errMsg">
-      {{ getValidationMessage(fromInput.errors, 'start time') }}
+      {{ validationMessage(fromInput.errors, 'start time') }}
     </p>
   }
 
-  <mat-form-field class="w-100" appearance="outline">
+  <mat-form-field class="w-48" appearance="outline">
     <mat-label>To</mat-label>
     <input
       matInput
@@ -52,10 +49,15 @@
       #toInput="ngModel"
       [ngModel]="to"
       required
-      (ngModelChange)="updateHours('to', $event)" />
+      (ngModelChange)="updateTime('to', $event)" />
   </mat-form-field>
-  @if (toInput.invalid && (toInput.dirty || toInput.touched)) {
-    <p class="errMsg">{{ getValidationMessage(toInput.errors, 'end time') }}</p>
+  @if (
+    form.controls.to.invalid &&
+    (form.controls.to.dirty || form.controls.to.untouched)
+  ) {
+    <p class="errMsg">
+      {{ validationMessage(form.controls.to.errors, 'invalidTime') }}
+    </p>
   }
   <div class="errMsg">
     {{ errMessages.join(', ') }}
