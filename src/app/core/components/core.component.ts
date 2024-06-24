@@ -12,8 +12,8 @@ export abstract class CoreComponent implements OnDestroy {
         this.router = injector.get(Router);
     }
 
-    set setSubs(sub: Subscription) {
-        this.subscriptions.push(sub);
+    set setSubs(subscription: Subscription) {
+        this.subscriptions.push(subscription);
     }
 
     public goTo(path: string): void {

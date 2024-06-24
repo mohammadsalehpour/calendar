@@ -48,9 +48,9 @@ import { Appointment, ToFormControl } from '../calendar.interface';
 })
 export class AppointmentModalComponent {
   form: FormGroup<ToFormControl<Appointment>>;
-  from: string = '';
-  to: string = '';
-  title: string = '';
+  from = '';
+  to = '';
+  title = '';
   errMessages: string[] = [];
 
   constructor(
@@ -74,18 +74,17 @@ export class AppointmentModalComponent {
       }),
     });
 
-    data && this.form.patchValue(data);
-    this.from = this.form.value.from!.toLocaleTimeString('en-US', {
-      hour12: false,
-      timeStyle: 'short',
-    });
-    this.to = this.form.value.to!.toLocaleTimeString('en-US', {
-      hour12: false,
-      timeStyle: 'short',
-    });
+    if (data) {
+      this.form.patchValue(data);
+    }
+
+    // data && this.form.patchValue(data);
+    this.from = this.form.value.from!.toLocaleTimeString('en-US', { hour12: false, timeStyle: 'short' });
+    this.to = this.form.value.to!.toLocaleTimeString('en-US', { hour12: false, timeStyle: 'short' });
+
   }
 
-  updateTime(key: any, val: any) {
+  updateHours(key: string | number, val: string) {
     if (key == 'from') {
       this.from = val;
     }

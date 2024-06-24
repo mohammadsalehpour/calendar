@@ -19,38 +19,42 @@
     [style.height.px]="appointment.height || rowHeight"
     (cdkDragStarted)="dragStart(appointment, i)"
     (cdkDragEnded)="dropped($event)"
-    (click)="showAppointmentInfo(appointment)">
+    (click)="showAppointmentInfo(appointment)"
+    (keyup)="showAppointmentInfo(appointment)">
     <ng-container *ngIf="appointment.small; else notSmall">
       ({{ appointment.title }}) {{ appointment.from | date: 'HH:mm' }} -
       {{ appointment.to | date: 'HH:mm' }}
     </ng-container>
     <ng-template #notSmall>
-      {{ appointment.title }}
-      <div>
-        {{ appointment.from | date: 'HH:mm' }} -
-        {{ appointment.to | date: 'HH:mm' }}
+      <div class="appoint-container">
+        <div class="appoint-title">
+          <p style="font-size: 16px;">{{ appointment.title }}</p>
+          <div>
+            {{ appointment.from | date: 'HH:mm' }} -
+            {{ appointment.to | date: 'HH:mm' }}
+          </div>
+        </div>
+        <div class="appoint-action">
+          <button
+          mat-raised-button extended
+          aria-label="Edit"
+            class="appoint-edit"
+            (click)="editAppointment($event, appointment)">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+          <button
+          mat-raised-button extended
+            aria-label="Delete"
+            class="appoint-delete"
+            (click)="deleteAppointment($event, appointment)">
+            <mat-icon>delete</mat-icon>
+            Delete
+          </button>
+        </div>
       </div>
     </ng-template>
-    <section>
-      <div class="buttons-holder">
-        <button
-          mat-icon-button
-          aria-label="Edit"
-          class="edit"
-          (click)="editAppointment($event, appointment)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          aria-label="Close"
-          class="remove"
-          (click)="deleteAppointment($event, appointment)">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div>
-    </section>
   </div>
-
   <div class="now" [style.top.px]="currentPosition"></div>
 
   <div class="graph">
@@ -69,8 +73,12 @@
         [style.height.px]="rowHeight"
         role="button"
         tabindex="1"
+
         *ngFor="let hour of hours; let i = index"
-        (click)="addAppointment(i, 'row')"></div>
+        (keyup)="addAppointment(i, 'row')"
+        (click)="addAppointment(i, 'row')"
+        >
+      </div>
     </div>
   </div>
 </div>
