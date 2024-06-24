@@ -1,4 +1,13 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -8,7 +17,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
-import { CdkDrag, CdkDragEnd, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import {
+  CdkDrag,
+  CdkDragEnd,
+  CdkDropList,
+  CdkDropListGroup,
+} from '@angular/cdk/drag-drop';
 import { Appointment } from '../calendar.interface';
 import { Subject } from 'rxjs/internal/Subject';
 import { AppointmentModalComponent } from '../appointment-modal/appointment-modal.component';
@@ -22,7 +36,21 @@ import { DiffMinutes } from '../../../core/utils/utility';
   standalone: true,
   templateUrl: './calendar-day-view.component.html',
   styleUrls: ['./calendar-day-view.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatChipsModule, MatCardModule, MatButtonModule, MatIconModule, MatDatepickerModule, MatListModule, AppointmentModalComponent, CdkDropListGroup, CdkDropList, CdkDrag],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatChipsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatListModule,
+    AppointmentModalComponent,
+    CdkDropListGroup,
+    CdkDropList,
+    CdkDrag,
+  ],
 })
 export class CalendarDayViewComponent implements OnInit, OnDestroy {
   @ViewChild('parent') parent!: ElementRef;
@@ -41,14 +69,18 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
   rowHeight: number = 52;
   currentPosition: number = 0;
   _appointments: Appointment[] = [];
-  draggingRow!: { index: number, data: Appointment };
+  draggingRow!: { index: number; data: Appointment };
   hours: number[] = Array.from({ length: 24 }, (_, i) => i);
   protected unsubscribe$ = new Subject<void>();
 
-  get selectedDate() { return this._date; }
-  get appointments() { return this._appointments; }
+  get selectedDate() {
+    return this._date;
+  }
+  get appointments() {
+    return this._appointments;
+  }
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.calculateCurrentPosition();
@@ -59,14 +91,17 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
     const date = new Date();
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    this.currentPosition = (hours * this.rowHeight) + (minutes * (this.rowHeight / 60));
+    this.currentPosition =
+      hours * this.rowHeight + minutes * (this.rowHeight / 60);
   }
 
   calculateAppointmentPosition(appointments?: Appointment[]) {
     this._appointments = (appointments || this.appointments).map(app => {
       const diff = DiffMinutes(app.from, app.to);
       const height = (this.rowHeight / 60) * diff;
-      const top = (app.from.getHours() * this.rowHeight) + (app.from.getMinutes() * (this.rowHeight / 60));
+      const top =
+        app.from.getHours() * this.rowHeight +
+        app.from.getMinutes() * (this.rowHeight / 60);
       return { ...app, top, height, small: height < 35 };
     });
   }
@@ -75,7 +110,7 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
     let from;
     let to;
     let isNull;
-    if(ref === 'row'){
+    if (ref === 'row') {
       const _hour: number = hour || this.selectedDate.getHours();
       from = new Date(this.selectedDate);
       to = new Date(from);
@@ -87,8 +122,15 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
       to = new Date(0, 0, 0, 1);
       isNull = true;
     }
-    this.dialog.open(AppointmentModalComponent, { width: '500px', data: { from, to, actionType: "Add", isNull: isNull } })
-      .afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((result: Appointment) => {
+    this.dialog
+      .open(AppointmentModalComponent, {
+        width: '600px',
+        height: '415px',
+        data: { from, to, actionType: 'Add', isNull: isNull },
+      })
+      .afterClosed()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result: Appointment) => {
         if (!result) return;
         this.save.emit(result);
       });
@@ -98,7 +140,7 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
     evt?.stopPropagation();
     const dialog = this.dialog.open(AppointmentDeleteModalComponent, {
       width: '250px',
-      data : appointment
+      data: appointment,
     });
     dialog.afterClosed().subscribe(result => {
       if (!result) return;
@@ -108,24 +150,37 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
 
   editAppointment(evt: MouseEvent, appointment: Appointment) {
     evt?.stopPropagation();
-    appointment.actionType = "Edit";
-    this.dialog.open(AppointmentModalComponent, { width: '500px', data: appointment })
-      .afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((result: Appointment) => {
-      if (!result) return;
-      this.save.emit(result);
-    });
+    appointment.actionType = 'Edit';
+    this.dialog
+      .open(AppointmentModalComponent, {
+        width: '600px',
+        height: '415px',
+        data: appointment,
+      })
+      .afterClosed()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result: Appointment) => {
+        if (!result) return;
+        this.save.emit(result);
+      });
   }
 
   showAppointmentInfo(appointment: Appointment) {
-    this.dialog.open(AppointmentInfoComponent, { width: '450px', data: appointment })
-      .afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((result: Appointment) => {
+    this.dialog
+      .open(AppointmentInfoComponent, { width: '450px', data: appointment })
+      .afterClosed()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result: Appointment) => {
         console.log(result);
       });
   }
 
   computeDragRenderPos() {
     const quarterHeight = this.rowHeight / 4;
-    return (pos: { x: any; y: number; }) => ({ x: pos.x, y: (pos.y / quarterHeight) * quarterHeight });
+    return (pos: { x: any; y: number }) => ({
+      x: pos.x,
+      y: (pos.y / quarterHeight) * quarterHeight,
+    });
   }
 
   dragStart(data: Appointment, index: number) {
@@ -133,17 +188,26 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
   }
 
   dropped(evt: CdkDragEnd<Appointment>) {
-    const parentRect = (this.parent.nativeElement).getBoundingClientRect();
+    const parentRect = this.parent.nativeElement.getBoundingClientRect();
     const row = (evt.dropPoint.y - parentRect.top) / this.rowHeight;
     const [hours, minutes] = row.toFixed(2).split('.');
 
-    const diff = DiffMinutes(this.draggingRow.data.from, this.draggingRow.data.to);
+    const diff = DiffMinutes(
+      this.draggingRow.data.from,
+      this.draggingRow.data.to
+    );
     const from = new Date(this.draggingRow.data.from);
     from.setHours(+hours, (60 / 100) * +minutes, 0, 0);
     const to = new Date(from);
     to.setMinutes(diff + from.getMinutes());
 
-    const changedAppointment: Appointment = { ...this.draggingRow.data, from, to, top: 0, height: 0 };
+    const changedAppointment: Appointment = {
+      ...this.draggingRow.data,
+      from,
+      to,
+      top: 0,
+      height: 0,
+    };
     this.save.emit(changedAppointment);
   }
 
@@ -151,6 +215,4 @@ export class CalendarDayViewComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
-
 }
