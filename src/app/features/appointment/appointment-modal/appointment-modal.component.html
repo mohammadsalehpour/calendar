@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field class="w-100 mt-4" appearance="outline">
+      <mat-label>Title</mat-label>
+      <input
+        matInput
+        formControlName="title"
+        (input)="onGlobalInputChanges()" />
+    </mat-form-field>
+
+    @if (
+      form.controls.title.invalid &&
+      (form.controls.title.dirty || form.controls.title.touched)
+    ) {
+      <p class="errMsg">
+        {{ getValidationMessage(form.controls.title.errors, 'title') }}
+      </p>
+    }
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+  </form>
+
+  <mat-form-field class="w-100" appearance="outline">
+    <mat-label>From</mat-label>
+    <input
+      matInput
+      type="time"
+      step="900"
+      placeholder="start date"
+      #fromInput="ngModel"
+      [ngModel]="from"
+      required
+      (ngModelChange)="updateHours('from', $event)" />
+  </mat-form-field>
+  @if (fromInput.invalid && (fromInput.dirty || fromInput.touched)) {
+    <p class="errMsg">
+      {{ getValidationMessage(fromInput.errors, 'start time') }}
+    </p>
+  }
+
+  <mat-form-field class="w-100" appearance="outline">
+    <mat-label>To</mat-label>
+    <input
+      matInput
+      type="time"
+      step="900"
+      placeholder="start date"
+      #toInput="ngModel"
+      [ngModel]="to"
+      required
+      (ngModelChange)="updateHours('to', $event)" />
+  </mat-form-field>
+  @if (toInput.invalid && (toInput.dirty || toInput.touched)) {
+    <p class="errMsg">{{ getValidationMessage(toInput.errors, 'end time') }}</p>
+  }
+  <div class="errMsg">
+    {{ errMessages.join(', ') }}
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    mat-raised-button
+    [disabled]="form.invalid"
+    color="primary"
+    (click)="submit()">
+    Save
+  </button>
+  <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+</mat-dialog-actions>

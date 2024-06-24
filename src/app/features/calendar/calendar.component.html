@@ -1,0 +1,20 @@
+<div class="container">
+  <div>
+    <button mat-raised-button color="primary" (click)="addAppointment()">
+      <mat-icon>add</mat-icon>
+      Add Appointment
+    </button>
+    <mat-card class="inline-calendar-card">
+      <mat-calendar
+        [selected]="selectedDate"
+        (selectedChange)="updateFormDate($event)"></mat-calendar>
+    </mat-card>
+  </div>
+
+  <app-calendar-day-view
+    [selectedDate]="selectedDate"
+    [appointments]="appointments"
+    (save)="saveAppointment($event)"
+    (delete)="deleteAppointment($event)">
+  </app-calendar-day-view>
+</div>

@@ -1,0 +1,76 @@
+<div class="current-day">
+  <div>
+    <span class="dayName">{{ selectedDate | date: 'E' }}</span>
+    <span class="dayNum">{{ selectedDate | date: 'dd' }}</span>
+  </div>
+</div>
+<div class="parent" #parent>
+  <div
+    cdkDrag
+    class="appointment"
+    cdkDragLockAxis="y"
+    cdkDragBoundary=".parent"
+    [style.height.px]="rowHeight"
+    tabindex="1"
+    [class.small]="appointment.small"
+    [cdkDragConstrainPosition]="computeDragRenderPos()"
+    *ngFor="let appointment of appointments; let i = index"
+    [style.top.px]="appointment.top"
+    [style.height.px]="appointment.height || rowHeight"
+    (cdkDragStarted)="dragStart(appointment, i)"
+    (cdkDragEnded)="dropped($event)"
+    (click)="showAppointmentInfo(appointment)">
+    <ng-container *ngIf="appointment.small; else notSmall">
+      ({{ appointment.title }}) {{ appointment.from | date: 'HH:mm' }} -
+      {{ appointment.to | date: 'HH:mm' }}
+    </ng-container>
+    <ng-template #notSmall>
+      {{ appointment.title }}
+      <div>
+        {{ appointment.from | date: 'HH:mm' }} -
+        {{ appointment.to | date: 'HH:mm' }}
+      </div>
+    </ng-template>
+    <section>
+      <div class="buttons-holder">
+        <button
+          mat-icon-button
+          aria-label="Edit"
+          class="edit"
+          (click)="editAppointment($event, appointment)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          aria-label="Close"
+          class="remove"
+          (click)="deleteAppointment($event, appointment)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <div class="now" [style.top.px]="currentPosition"></div>
+
+  <div class="graph">
+    <div class="hours">
+      <div
+        [style.height.px]="rowHeight"
+        *ngFor="let hour of hours; let i = index">
+        <span *ngIf="hour" class="title">
+          {{ hour }} {{ hour > 11 ? 'PM' : 'AM' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="rows">
+      <div
+        [style.height.px]="rowHeight"
+        role="button"
+        tabindex="1"
+        *ngFor="let hour of hours; let i = index"
+        (click)="addAppointment(i, 'row')"></div>
+    </div>
+  </div>
+</div>
